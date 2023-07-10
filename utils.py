@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import warnings
 warnings.filterwarnings('ignore')
+import streamlit as st
 import os
 import boto3
 from insightface.app import FaceAnalysis
@@ -27,6 +28,7 @@ def detect_faces(img):
         data.append(clipped_face)
     return data,img,faces
 
+@st.cache(allow_output_mutation=True)
 def load_model():
     s3 = boto3.client('s3', 
                    aws_access_key_id=access_key_id, 
@@ -35,6 +37,8 @@ def load_model():
     if not os.path.exists('inswapper_128.onnx'):
         print("Downloading the model...")
         s3.download_file('my-faceswapping-bucket', 'inswapper_128.onnx', 'inswapper_128.onnx')
+    else:
+        print("model is already here..")
     swapper = insightface.model_zoo.get_model('inswapper_128.onnx',download=False,download_zip=False)
     return swapper
 def swap_face(img,faces,target_face,swapper):
