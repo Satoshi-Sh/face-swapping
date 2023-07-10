@@ -10,11 +10,6 @@ access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
 secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
 default_region = os.environ.get('AWS_DEFAULT_REGION')
 
-# override original package for some error 
-def lstsq_with_rcond(X, Y):
-    return np.linalg.lstsq(X, Y, rcond=None)[0]
-insightface.utils.transform.lstsq = lstsq_with_rcond
-
 def main():
     return;
 
@@ -38,6 +33,7 @@ def load_model():
                    aws_secret_access_key=secret_access_key,
                    region_name=default_region)
     if not os.path.exists('inswapper_128.onnx'):
+        print("Downloading the model...")
         s3.download_file('my-faceswapping-bucket', 'inswapper_128.onnx', 'inswapper_128.onnx')
     swapper = insightface.model_zoo.get_model('inswapper_128.onnx',download=False,download_zip=False)
     return swapper
