@@ -28,7 +28,7 @@ def detect_faces(img):
         data.append(clipped_face)
     return data,img,faces
 
-@st.cache(allow_output_mutation=True)
+@st.cache_data(allow_output_mutation=True)
 def load_model():
     s3 = boto3.client('s3', 
                    aws_access_key_id=access_key_id, 
