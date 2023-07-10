@@ -1,1 +1,4 @@
 venv/
+.streamlit/
+.env
+inswapper_128.onnx

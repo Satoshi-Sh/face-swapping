@@ -1,7 +1,12 @@
 import insightface 
 import cv2
 import numpy as np
+import os
+import boto3
 from insightface.app import FaceAnalysis
+access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
+secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
+default_region = os.environ.get('AWS_DEFAULT_REGION')
 
 def main():
     return;
@@ -21,6 +26,12 @@ def detect_faces(img):
     return data,img,faces
 
 def load_model():
+    s3 = boto3.client('s3', 
+                   aws_access_key_id=access_key_id, 
+                   aws_secret_access_key=secret_access_key,
+                   region_name=default_region)
+    if not os.path.exists('inswapper_128.onnx'):
+        s3.download_file('my-faceswapping-bucket', 'inswapper_128.onnx', 'inswapper_128.onnx')
     swapper = insightface.model_zoo.get_model('inswapper_128.onnx',download=False,download_zip=False)
     return swapper
 def swap_face(img,faces,target_face,swapper):

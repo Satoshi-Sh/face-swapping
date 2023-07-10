@@ -43,17 +43,16 @@ if image is not None:
             col3.image(clippedimage,caption=f"clipped-face {i}")
         if index==0:
             col4.image(clippedimage,caption=f"clipped-face {i}")
-    if (model :=load_model()):
-       selected_option = st.selectbox("Select an option", options)
-       if selected_option != 'choose target image':
+    selected_option = st.selectbox("Select an option", options)
+    if selected_option != 'choose target image':
+        if (model :=load_model()):
             index = int(selected_option.split(' ')[-1]) -1
             st.image(images[index],caption="target face")
             new_image = swap_face(img,faces,faces[index],model)
             st.image(new_image,caption='All Same Face')
-            
+                
             st.download_button("Download Swapped Image", convert_image(new_image),f"swapped_{file_name.split('.')[0]}.png","image/png")
-            
-    else:
-        st.write("Loading trained model")
+        else:
+            st.write("Loading trained model...")
 
         
