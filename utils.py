@@ -8,6 +8,11 @@ access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
 secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
 default_region = os.environ.get('AWS_DEFAULT_REGION')
 
+# override original package for some error 
+def lstsq_with_rcond(X, Y):
+    return np.linalg.lstsq(X, Y, rcond=None)[0]
+insightface.utils.transform.lstsq = lstsq_with_rcond
+
 def main():
     return;
 
