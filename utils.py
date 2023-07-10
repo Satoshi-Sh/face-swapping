@@ -2,7 +2,7 @@ import insightface
 import cv2
 import numpy as np
 import warnings
-warnings.filterwarning('ignore')
+warnings.filterwarnings('ignore')
 import os
 import boto3
 from insightface.app import FaceAnalysis
